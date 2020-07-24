@@ -452,12 +452,15 @@ where
     }
 }
 
-impl<Ev> IntoEvents<Ev> for Vec<Ev> {
-    type Iter = Self;
+impl<T, Ev> IntoEvents<Ev> for Vec<T>
+where
+    T: Into<Ev>,
+{
+    type Iter = Vec<Ev>;
 
     #[inline]
     fn into_events(self) -> Self::Iter {
-        self
+        self.into_iter().map(Into::into).collect()
     }
 }
 
